@@ -42,7 +42,7 @@ const encrypt = async (textPlain)  =>{
 app.post("/obtenerCalculoMr360", async (req, res) => {
 
   let data = req.body;
-  console.log(req.body);
+ 
 
   try {
 
@@ -57,7 +57,7 @@ app.post("/obtenerCalculoMr360", async (req, res) => {
      if(response.ok){
      return response.json()
       } else {
-        console.log("ddddd")
+        
         data = {status:"error"}
         return data
       }
@@ -68,7 +68,7 @@ app.post("/obtenerCalculoMr360", async (req, res) => {
     })
 
   } catch (err){
-    console.log("yyyy")
+   
    return res.json({status:"error"})
 
   }
@@ -95,7 +95,7 @@ app.post("/registrarUsuario", async (req, res) => {
      res.json({status: "success"})
 
   } catch (err){
-    console.log(err)
+  
     res.json({status: "error"})
   }
 
@@ -110,14 +110,14 @@ const firmarToken = (nombre,correo, mantenerSeccion) =>{
       nombre: nombre,
       correo: correo,
     }, secret_code, { expiresIn: "30d"})
-    console.log(mantenerSeccion);
+
     return token;
   } else{
       const token = jwt.sign({
         nombre: nombre,
         correo: correo,
       }, secret_code, { expiresIn: "30m"})
-      console.log(mantenerSeccion);
+     
        return token;
     }
 
@@ -160,13 +160,13 @@ app.get("/reviewToken", async (req, res) => {
     const correo = decode.correo
     
     const user = await User.findOne({ correo: correo})
-    console.log("prueba token")
+  
 
 
     jwt.verify(token, secret_code, function(err, decoded) {
       if (err) {
 
-       console.log(err);
+       
        return res.json({status: "error", error: 'invalid token'});
       } else{
         return res.json({status: "success", user: user})
@@ -226,7 +226,7 @@ app.post("/forgot_password", async (req, res) => {
     });
 
   } catch (error){
-    console.log(error);
+  
     res.json({status: "error", error: ''})
   }
 

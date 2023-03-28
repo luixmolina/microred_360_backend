@@ -16,6 +16,7 @@ const puerto = process.env.PORT;
 const url = process.env.Url_calculator;
 const db_host = process.env.db_host;
 const secret_code = process.env.SECRET_CODE;
+const password_email = process.env.PASSWORD_EMAIL;
 
 const app = express();
 
@@ -28,21 +29,18 @@ app.use(cors());
 const encrypt = async (textPlain)  =>{
   const hash = await bycrypt.hash(textPlain,10);
   return hash
+}
 
-  }
-
-  const compare = async (passwordPlain, hashPassword)   =>{
+const compare = async (passwordPlain, hashPassword)   =>{
     const result = await bycrypt.compare(passwordPlain,hashPassword);
     return result
-  
-    }
+}
 
 
 
 app.post("/obtenerCalculoMr360", async (req, res) => {
 
   let data = req.body;
- 
 
   try {
 
@@ -57,33 +55,27 @@ app.post("/obtenerCalculoMr360", async (req, res) => {
      if(response.ok){
      return response.json()
       } else {
-        
+
         data = {status:"error"}
         return data
       }
      })
     .then(data =>{
-      
       return res.json(data)
     })
 
   } catch (err){
-   
    return res.json({status:"error"})
-
   }
-
 
   });
 
 app.post("/registrarUsuario", async (req, res) => {
 
- 
   try {
-
     const encrypted_password = await encrypt(req.body.password)
 
-     const user = await User.create({
+    const user = await User.create({
        nombre: req.body.nombre,
        correo: req.body.correo,
        institucion: req.body.institucion,
@@ -91,16 +83,13 @@ app.post("/registrarUsuario", async (req, res) => {
        telefono: req.body.telefono,
        password: encrypted_password,
        politicasGers: req.body.politicas,
-     })
-     res.json({status: "success"})
+    })
+
+    res.json({status: "success"})
 
   } catch (err){
-  
     res.json({status: "error"})
   }
-
- 
-  
 });
 
 const firmarToken = (nombre,correo, mantenerSeccion) =>{
@@ -116,15 +105,12 @@ const firmarToken = (nombre,correo, mantenerSeccion) =>{
       const token = jwt.sign({
         nombre: nombre,
         correo: correo,
-      }, secret_code, { expiresIn: "30m"})
-     
+      }, secret_code, { expiresIn: "60m"})
        return token;
     }
-
   }
 
 app.post("/Login", async (req, res) => {
-
 
  try {
   const user = await User.findOne({correo: req.body.correo})
@@ -132,22 +118,18 @@ app.post("/Login", async (req, res) => {
   const mantenerSeccion = req.body.mantenerSeccion;
  
   if(checkPassword){
-
     const token =firmarToken(user.nombre, user.correo, mantenerSeccion);
-
+    
     return res.json({status: "success", user: token})
 
   } else{
      return res.json({status: "error", user: false})
   }
-   
  } catch (error) {
 
   return res.json({status: "error", user: false})
  }
-  
 });
-
 
 
 app.get("/reviewToken", async (req, res) => {
@@ -161,30 +143,25 @@ app.get("/reviewToken", async (req, res) => {
     
     const user = await User.findOne({ correo: correo})
   
-
-
     jwt.verify(token, secret_code, function(err, decoded) {
       if (err) {
 
-       
        return res.json({status: "error", error: 'invalid token'});
       } else{
         return res.json({status: "success", user: user})
       }
     });
-   
   } catch (error){
-   
+
     res.json({status: "error", error: 'invalid token'})
   }
-
 });
 
 
 app.post("/forgot_password", async (req, res) => {
 
   let email = req.body;
-  
+
   try {
 
     const oldUser = await User.findOne({ correo: email.correo });
@@ -203,7 +180,7 @@ app.post("/forgot_password", async (req, res) => {
       service: 'gmail',
       auth: {
         user: 'microred360@gmail.com',
-        pass: 'phtylwcsgbwojscp'
+        pass: password_email
       }
     });
 
@@ -226,11 +203,9 @@ app.post("/forgot_password", async (req, res) => {
     });
 
   } catch (error){
-  
+
     res.json({status: "error", error: ''})
   }
-
-
 });
 
 
@@ -260,7 +235,7 @@ app.post('/reset-password', async (req, res) => {
 app.post('/cambiar_password', async (req, res) => {
 
   const {id, token, correo, password} = req.body;
- 
+
    const oldUser = await User.findOne({_id: id});
 
    if(!oldUser) {
@@ -273,7 +248,7 @@ app.post('/cambiar_password', async (req, res) => {
      const verify = jwt.verify(token, secretToken);
     
     const encryptedPassword =  await encrypt(password);
-    
+
     await User.updateOne(
       {_id: id
       },
@@ -284,7 +259,7 @@ app.post('/cambiar_password', async (req, res) => {
       }
       );
       res.json({status: "success"});
-    
+
    }catch (err){
     res.json({status: "Error", error: err.message});
    }

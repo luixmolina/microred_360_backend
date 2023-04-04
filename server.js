@@ -9,7 +9,6 @@ import nodemailer from "nodemailer";
 import * as dotenv from 'dotenv';
 
 
-
 dotenv.config({path:'./.env'});
 
 const puerto = process.env.PORT;
@@ -35,8 +34,6 @@ const compare = async (passwordPlain, hashPassword)   =>{
     const result = await bycrypt.compare(passwordPlain,hashPassword);
     return result
 }
-
-
 
 app.post("/obtenerCalculoMr360", async (req, res) => {
 
@@ -140,13 +137,13 @@ app.get("/reviewToken", async (req, res) => {
   try {
     const decode = jwt.decode(token, secret_code);
     const correo = decode.correo
-    
+
     const user = await User.findOne({ correo: correo})
-  
+
     jwt.verify(token, secret_code, function(err, decoded) {
       if (err) {
 
-       return res.json({status: "error", error: 'invalid token'});
+        return res.json({status: "error", error: 'invalid token'});
       } else{
         return res.json({status: "success", user: user})
       }
@@ -172,7 +169,6 @@ app.post("/forgot_password", async (req, res) => {
 
     const secretToken = secret_code + oldUser.password;
     const token = jwt.sign({ correo: oldUser.correo, id: oldUser.id}, secretToken, { expiresIn: "20m"});
-
     const link = 'http://localhost:3000/reset-password/'+oldUser.id+'/'+token;
 
 
@@ -212,7 +208,6 @@ app.post("/forgot_password", async (req, res) => {
 app.post('/reset-password', async (req, res) => {
 
   const {id, token} = req.body;
-
    const oldUser = await User.findOne({_id: id});
 
    if(!oldUser) {
@@ -223,9 +218,9 @@ app.post('/reset-password', async (req, res) => {
 
    try {
      const verify = jwt.verify(token, secretToken);
-    
-     res.json({status: "Success", correo: verify.correo})
-    
+
+      res.json({status: "Success", correo: verify.correo})
+
    }catch (err){
     res.json({status: "Error"})
    }

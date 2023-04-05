@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import bycrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import * as dotenv from 'dotenv';
-
+import path from 'path';
 
 dotenv.config({path:'./.env'});
 
@@ -16,6 +16,11 @@ const url = process.env.Url_calculator;
 const db_host = process.env.db_host;
 const secret_code = process.env.SECRET_CODE;
 const password_email = process.env.PASSWORD_EMAIL;
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -24,6 +29,8 @@ mongoose.connect(db_host)
 app.use(express.json());
 
 app.use(cors());
+
+app.use(express.static(path.join(__dirname+"/public")))
 
 const encrypt = async (textPlain)  =>{
   const hash = await bycrypt.hash(textPlain,10);
@@ -88,6 +95,64 @@ app.post("/registrarUsuario", async (req, res) => {
     res.json({status: "error"})
   }
 });
+
+app.get('/Dashboard', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
+app.get('/Mapa', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
+app.get('/Login', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
+app.get('/singup', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
+
+app.get('/recuperar', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
+app.get('/reset-password/:id/:token', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
+
 
 const firmarToken = (nombre,correo, mantenerSeccion) =>{
  
@@ -169,7 +234,7 @@ app.post("/forgot_password", async (req, res) => {
 
     const secretToken = secret_code + oldUser.password;
     const token = jwt.sign({ correo: oldUser.correo, id: oldUser.id}, secretToken, { expiresIn: "20m"});
-    const link = 'http://localhost:3000/reset-password/'+oldUser.id+'/'+token;
+    const link = 'http://localhost:5000/reset-password/'+oldUser.id+'/'+token;
 
 
     var transporter = nodemailer.createTransport({

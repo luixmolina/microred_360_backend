@@ -104,6 +104,32 @@ app.get('/Dashboard', function(req, res) {
   })
 })
 
+app.get("/reviewToken", async (req, res) => {
+
+  let data = req.body;
+  const token = req.headers['x-access-token'];
+  console.log("iiiii");
+  try {
+    const decode = jwt.decode(token, secret_code);
+    const correo = decode.correo
+
+    const user = await User.findOne({ correo: correo})
+    console.log("sfdff");
+    jwt.verify(token, secret_code, function(err, decoded) {
+      if (err) {
+
+        return res.json({status: "error", error: 'invalid token'});
+      } else{
+        return res.json({status: "success", user: user})
+      }
+    });
+  } catch (error){
+
+    res.json({status: "error", error: 'invalid token'})
+  }
+});
+
+
 app.get('/Mapa', function(req, res) {
   res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
     if (err) {
@@ -111,6 +137,9 @@ app.get('/Mapa', function(req, res) {
     }
   })
 })
+
+
+
 
 app.get('/Login', function(req, res) {
   res.sendFile(path.join(__dirname, 'public/index.html'), function(err) {
@@ -181,7 +210,7 @@ app.post("/Login", async (req, res) => {
  
   if(checkPassword){
     const token =firmarToken(user.nombre, user.correo, mantenerSeccion);
-    
+    console.log("hhhh");
     return res.json({status: "success", user: token})
 
   } else{
@@ -194,30 +223,7 @@ app.post("/Login", async (req, res) => {
 });
 
 
-app.get("/reviewToken", async (req, res) => {
 
-  let data = req.body;
-  const token = req.headers['x-access-token'];
-
-  try {
-    const decode = jwt.decode(token, secret_code);
-    const correo = decode.correo
-
-    const user = await User.findOne({ correo: correo})
-
-    jwt.verify(token, secret_code, function(err, decoded) {
-      if (err) {
-
-        return res.json({status: "error", error: 'invalid token'});
-      } else{
-        return res.json({status: "success", user: user})
-      }
-    });
-  } catch (error){
-
-    res.json({status: "error", error: 'invalid token'})
-  }
-});
 
 
 app.post("/forgot_password", async (req, res) => {

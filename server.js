@@ -108,13 +108,11 @@ app.get("/reviewToken", async (req, res) => {
 
   let data = req.body;
   const token = req.headers['x-access-token'];
-  console.log("iiiii");
   try {
     const decode = jwt.decode(token, secret_code);
     const correo = decode.correo
 
     const user = await User.findOne({ correo: correo})
-    console.log("sfdff");
     jwt.verify(token, secret_code, function(err, decoded) {
       if (err) {
 
@@ -210,7 +208,6 @@ app.post("/Login", async (req, res) => {
  
   if(checkPassword){
     const token =firmarToken(user.nombre, user.correo, mantenerSeccion);
-    console.log("hhhh");
     return res.json({status: "success", user: token})
 
   } else{

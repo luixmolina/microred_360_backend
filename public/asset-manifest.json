@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.8169edae.css",
-    "main.js": "/static/js/main.40fc6648.js",
+    "main.css": "/static/css/main.99a8f1bb.css",
+    "main.js": "/static/js/main.decf3b5d.js",
     "static/js/703.d40faac4.chunk.js": "/static/js/703.d40faac4.chunk.js",
     "static/js/198.2e84f36b.chunk.js": "/static/js/198.2e84f36b.chunk.js",
-    "static/js/483.e255acfc.chunk.js": "/static/js/483.e255acfc.chunk.js",
+    "static/js/483.910f41b9.chunk.js": "/static/js/483.910f41b9.chunk.js",
     "static/media/twiter-logo.png": "/static/media/twiter-logo.b7bd98bb0ce5b9790f12.png",
     "static/media/InterpretacionGraficos.pdf": "/static/media/InterpretacionGraficos.a44080e5a8692933de26.pdf",
     "static/media/imagenNeplan.png": "/static/media/imagenNeplan.a59bb19073e63450f8fe.png",
@@ -13,14 +13,14 @@
     "static/media/linkeding-logo.png": "/static/media/linkeding-logo.c4cccafd2215f79fb500.png",
     "static/media/PoliticasDePrivacidad.pdf": "/static/media/PoliticasDePrivacidad.ffae1b018323e50f59e1.pdf",
     "index.html": "/index.html",
-    "main.8169edae.css.map": "/static/css/main.8169edae.css.map",
-    "main.40fc6648.js.map": "/static/js/main.40fc6648.js.map",
+    "main.99a8f1bb.css.map": "/static/css/main.99a8f1bb.css.map",
+    "main.decf3b5d.js.map": "/static/js/main.decf3b5d.js.map",
     "703.d40faac4.chunk.js.map": "/static/js/703.d40faac4.chunk.js.map",
     "198.2e84f36b.chunk.js.map": "/static/js/198.2e84f36b.chunk.js.map",
-    "483.e255acfc.chunk.js.map": "/static/js/483.e255acfc.chunk.js.map"
+    "483.910f41b9.chunk.js.map": "/static/js/483.910f41b9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8169edae.css",
-    "static/js/main.40fc6648.js"
+    "static/css/main.99a8f1bb.css",
+    "static/js/main.decf3b5d.js"
   ]
 }
